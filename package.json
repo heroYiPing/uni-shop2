@@ -1,0 +1,23 @@
+{
+	"name": "uni-shop2",
+	"version": "1.0.0",
+	"description": "\"# uni-shop2\" \r \"# uni-shop2\"",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/liyihero/uni-shop2.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/liyihero/uni-shop2/issues"
+	},
+	"homepage": "https://github.com/liyihero/uni-shop2#readme",
+	"dependencies": {
+		"@escook/request-miniprogram": "^0.2.1"
+	}
+}
