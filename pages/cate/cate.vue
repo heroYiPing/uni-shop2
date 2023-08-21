@@ -8,47 +8,13 @@
 			</scroll-view>
 			<!-- 右侧滑动区域 -->
 			<scroll-view scroll-y="true" :style="{ height: wh + 'px' }">
-				<view></view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
-				<view>xxxxx</view>
+				<view class="cate-lv2" v-for="(item, i) in cateLevel2" :key="i">
+					<view class="cate-level-title">/{{ item.cat_name }}/</view>
+					<view class="cate-level-content" v-for="(item2, i2) in cateLevel2[i].children" :key="i2">
+						<img :src="item2.cat_icon" alt="" />
+						<view>{{ item2.cat_name }}</view>
+					</view>
+				</view>
 			</scroll-view>
 		</view>
 	</view>
@@ -62,7 +28,9 @@ export default {
 			// 分类数据列表
 			cateList: [],
 			// 选中的分类索引值
-			activeIndex: 0
+			activeIndex: 0,
+			// 二级分类的列表
+			cateLevel2: []
 		};
 	},
 	methods: {
@@ -70,8 +38,12 @@ export default {
 			const { data: res } = await uni.$http.get('/api/public/v1/categories');
 			if (res.meta.status !== 200) return uni.$showMsg();
 			this.cateList = res.message;
+			// 为二级分类赋值
+			this.cateLevel2 = res.message[0].children;
 		},
 		selectCate(data, index) {
+			console.log(data, 'data');
+			this.cateLevel2 = data.children;
 			this.activeIndex = index;
 		}
 	},
@@ -111,5 +83,11 @@ export default {
 			}
 		}
 	}
+}
+.cate-level-title {
+	font-size: 12px;
+	font-weight: 700;
+	text-align: center;
+	padding: 15px 0;
 }
 </style>
