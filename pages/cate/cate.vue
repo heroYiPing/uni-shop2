@@ -6,7 +6,7 @@
 					<view @click="selectCate(item, i)" :class="['left-scroll-item-view', activeIndex == i ? 'active' : '']">{{ item.cat_name }}</view>
 				</block>
 			</scroll-view>
-			<!-- 右侧滑动区域 -->
+			<!-- 右侧滑动区域1 -->
 			<scroll-view scroll-y="true" :style="{ height: wh + 'px' }">
 				<view class="cate-lv2" v-for="(item, i) in cateLevel2" :key="i">
 					<view class="cate-level-title">/{{ item.cat_name }}/</view>
