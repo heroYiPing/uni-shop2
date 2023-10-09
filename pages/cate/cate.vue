@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<view class="scroll-view-container">
+			<!-- 左侧滑动区域 -->
 			<scroll-view class="left-scroll-view" :style="{ height: wh + 'px' }" scroll-y="true">
 				<block v-for="(item, i) in cateList" :key="i">
 					<view @click="selectCate(item, i)" :class="['left-scroll-item-view', activeIndex == i ? 'active' : '']">{{ item.cat_name }}</view>
@@ -9,10 +10,15 @@
 			<!-- 右侧滑动区域1 -->
 			<scroll-view scroll-y="true" :style="{ height: wh + 'px' }">
 				<view class="cate-lv2" v-for="(item, i) in cateLevel2" :key="i">
+					<!-- 二级分类标题 -->
 					<view class="cate-level-title">/{{ item.cat_name }}/</view>
-					<view class="cate-level-content" v-for="(item2, i2) in cateLevel2[i].children" :key="i2">
-						<img :src="item2.cat_icon" alt="" />
-						<view>{{ item2.cat_name }}</view>
+					<!-- 三级分类下的内容 -->
+					<view class="cate-level-content">
+						<!-- 三级分类的item项 -->
+						<view class="cate-level-content-item" v-for="(item2, i2) in cateLevel2[i].children" :key="i2">
+							<img :src="item2.cat_icon" alt="" />
+							<view>{{ item2.cat_name }}</view>
+						</view>
 					</view>
 				</view>
 			</scroll-view>
@@ -89,5 +95,26 @@ export default {
 	font-weight: 700;
 	text-align: center;
 	padding: 15px 0;
+}
+
+.cate-level-content {
+	display: flex;
+	flex-wrap: wrap;
+
+	.cate-level-content-item {
+		display: flex;
+		flex-direction: column;
+		width: 33.33%;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 10px;
+		image {
+			width: 60px;
+			height: 60px;
+		}
+		text {
+			font-size: 12px;
+		}
+	}
 }
 </style>
