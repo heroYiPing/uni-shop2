@@ -8,14 +8,14 @@
 				</block>
 			</scroll-view>
 			<!-- 右侧滑动区域1 -->
-			<scroll-view scroll-y="true" :style="{ height: wh + 'px' }">
+			<scroll-view scroll-y="true" :style="{ height: wh + 'px' }" :scroll-top="scrollTop">
 				<view class="cate-lv2" v-for="(item, i) in cateLevel2" :key="i">
 					<!-- 二级分类标题 -->
 					<view class="cate-level-title">/{{ item.cat_name }}/</view>
 					<!-- 三级分类下的内容 -->
 					<view class="cate-level-content">
 						<!-- 三级分类的item项 -->
-						<view class="cate-level-content-item" v-for="(item2, i2) in cateLevel2[i].children" :key="i2">
+						<view class="cate-level-content-item" v-for="(item2, i2) in cateLevel2[i].children" :key="i2" @click="goToGoodsList(item2)">
 							<img :src="item2.cat_icon" alt="" />
 							<view>{{ item2.cat_name }}</view>
 						</view>
@@ -36,10 +36,16 @@ export default {
 			// 选中的分类索引值
 			activeIndex: 0,
 			// 二级分类的列表
-			cateLevel2: []
+			cateLevel2: [],
+			scrollTop: 0
 		};
 	},
 	methods: {
+		goToGoodsList(item) {
+			uni.navigateTo({
+				url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
+			});
+		},
 		async getCateList() {
 			const { data: res } = await uni.$http.get('/api/public/v1/categories');
 			if (res.meta.status !== 200) return uni.$showMsg();
@@ -51,6 +57,7 @@ export default {
 			console.log(data, 'data');
 			this.cateLevel2 = data.children;
 			this.activeIndex = index;
+			this.scrollTop = this.scrollTop == 0 ? 1 : 0;
 		}
 	},
 	onLoad() {
