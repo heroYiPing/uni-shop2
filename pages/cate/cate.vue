@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- 使用自定义的搜索组件 -->
+		<my-search></my-search>
 		<view class="scroll-view-container">
 			<!-- 左侧滑动区域 -->
 			<scroll-view class="left-scroll-view" :style="{ height: wh + 'px' }" scroll-y="true">
@@ -63,7 +65,7 @@ export default {
 	onLoad() {
 		const sysInfo = uni.getWindowInfo();
 		console.log(sysInfo);
-		this.wh = sysInfo.windowHeight;
+		this.wh = sysInfo.windowHeight - 50px;
 		// 获取分类数据
 		this.getCateList();
 	}
