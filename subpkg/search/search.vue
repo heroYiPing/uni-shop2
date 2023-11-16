@@ -1,7 +1,7 @@
 <template>
 	<view class="">
 		<view class="search-box">
-			<uni-search-bar @input="input" :radius="100" cancel-button="none" :focus="true"></uni-search-bar>
+			<uni-search-bar v-model="keyWord" @input="input" :radius="100" cancel-button="none" :focus="true"></uni-search-bar>
 		</view>
 		<!-- 搜索建议列表 -->
 		<view class="sugg-list" v-if="searchResultList.length !== 0">
@@ -20,7 +20,7 @@
 			</view>
 			<!-- 搜索历史内容 -->
 			<view class="history-content">
-				<uni-tag :text="item" :inverted="true" v-for="(item, index) in historyList" />
+				<uni-tag :text="item" @click="handleHistoryToSearch(item)" :inverted="true" v-for="(item, index) in history" />
 			</view>
 		</view>
 	</view>
@@ -32,9 +32,15 @@ export default {
 		return {
 			timer: null, // 定时器
 			keyWord: '', // 关键词
-			historyList: ['a', 'app', 'hi'], // 搜索关键词的历史数据
+			historyList: [], // 搜索关键词的历史数据
 			searchResultList: [] // 搜索结果列表
 		};
+	},
+	computed: {
+		history() {
+			// 数组是引用数据类型 避免对数组进行直接反转
+			return [...this.historyList].reverse();
+		}
 	},
 	methods: {
 		goToDetail(item) {
@@ -63,6 +69,23 @@ export default {
 			const { data: res } = await uni.$http.get('/api/public/v1/goods/qsearch', { query: this.keyWord });
 			if (res.meta.status !== 200) return uni.$showMsg();
 			this.searchResultList = res.message;
+			// 将搜索词存入数组
+			this.saveSearchHistoryList(this.keyWord);
+		},
+		saveSearchHistoryList(keyword) {
+			// 将关键词存入搜索历史数组中
+			// this.historyList.push(keyword);
+			const set = new Set(this.historyList);
+			set.delete(keyword);
+			set.add(keyword);
+
+			this.historyList = Array.from(set);
+		},
+		handleHistoryToSearch(keyword) {
+			// keyWord
+			this.keyWord = keyword;
+			// 调用查询方法
+			this.getSearchList();
 		}
 	}
 };
