@@ -86,6 +86,7 @@ export default {
 			this.keyWord = keyword;
 			// 调用查询方法
 			this.getSearchList();
+			// 持久化存储
 		}
 	}
 };
