@@ -16,7 +16,7 @@
 			<!-- 标题区域 -->
 			<view class="history-title">
 				<text>搜索历史</text>
-				<uni-icons type="trash" size="24"></uni-icons>
+				<uni-icons type="trash" size="24" @click="clearHistoryies"></uni-icons>
 			</view>
 			<!-- 搜索历史内容 -->
 			<view class="history-content">
@@ -78,16 +78,22 @@ export default {
 			const set = new Set(this.historyList);
 			set.delete(keyword);
 			set.add(keyword);
-
 			this.historyList = Array.from(set);
+			// 调用uni.setStorageSync(key，value)将搜索历史记录持久化存储到本地
+			uni.setStorageSync('kw', JSON.stringify(this.historyList));
 		},
 		handleHistoryToSearch(keyword) {
-			// keyWord
-			this.keyWord = keyword;
-			// 调用查询方法
-			this.getSearchList();
-			// 持久化存储
+			uni.navigateTo({
+				url: '/subpkg/goods_list/goods_list?query=' + keyword
+			});
+		},
+		clearHistoryies() {
+			this.historyList = [];
+			uni.removeStorageSync('kw');
 		}
+	},
+	onLoad() {
+		this.historyList = JSON.parse(uni.getStorageSync('kw') || '[]');
 	}
 };
 </script>

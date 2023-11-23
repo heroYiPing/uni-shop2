@@ -1,13 +1,13 @@
 <template>
-  <view></view>
+	<view>goods_list</view>
 </template>
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  methods: {}
+	data() {
+		return {};
+	},
+	methods: {}
 };
 </script>
 
