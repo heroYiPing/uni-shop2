@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<!-- 使用自定义的搜索组件 -->
+		<!-- <my-search :bdRadius="5" :bgColor="'pink'"></my-search>	 -->
+		<my-search @click="goSearch"></my-search>
 		<view class="scroll-view-container">
 			<!-- 左侧滑动区域 -->
 			<scroll-view class="left-scroll-view" :style="{ height: wh + 'px' }" scroll-y="true">
@@ -41,6 +44,15 @@ export default {
 		};
 	},
 	methods: {
+		goSearch() {
+			console.log('go-search');
+			uni.navigateTo({
+				url: '/subpkg/search/search',
+				success: (res) => {},
+				fail: () => {},
+				complete: () => {}
+			});
+		},
 		goToGoodsList(item) {
 			uni.navigateTo({
 				url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
@@ -63,7 +75,7 @@ export default {
 	onLoad() {
 		const sysInfo = uni.getWindowInfo();
 		console.log(sysInfo);
-		this.wh = sysInfo.windowHeight;
+		this.wh = sysInfo.windowHeight - 50;
 		// 获取分类数据
 		this.getCateList();
 	}
