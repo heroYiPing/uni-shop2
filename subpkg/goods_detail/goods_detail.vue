@@ -1,5 +1,5 @@
 <template>
-	<view v-if="goods_info.goods_name">
+	<view v-if="goods_info.goods_name" class="goods_detail_container">
 		<!-- 轮播区域 -->
 		<swiper :indicator-dots="true" class="swp" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
 			<swiper-item v-for="(item, i) in goods_info.pics" :key="i">
@@ -25,6 +25,11 @@
 			<view class="yf">快递：免运费</view>
 		</view>
 		<rich-text :nodes="goods_info.goods_introduce"></rich-text>
+
+		<!-- 商品导航栏组件区域 -->
+		<view class="goods_nav">
+			<uni-goods-nav :fill="true" :options="options" :buttonGroup="buttonGroup" @click="onClick" @buttonClick="buttonClick" />
+		</view>
 	</view>
 </template>
 
@@ -32,10 +37,43 @@
 export default {
 	data() {
 		return {
-			goods_info: {}
+			goods_info: {},
+			options: [
+				{
+					icon: 'shop',
+					text: '店铺',
+					infoColor: 'red'
+				},
+				{
+					icon: 'cart',
+					text: '购物车',
+					info: 9
+				}
+			],
+			buttonGroup: [
+				{
+					text: '加入购物车',
+					backgroundColor: '#ff0000',
+					color: '#fff'
+				},
+				{
+					text: '立即购买',
+					backgroundColor: '#ffa200',
+					color: '#fff'
+				}
+			]
 		};
 	},
 	methods: {
+		onClick(e) {
+			console.log(e, 'e');
+			if (e.content.text == '购物车') {
+				// 切换到购物车页面
+				uni.switchTab({
+					url: '/pages/cart/cart'
+				});
+			}
+		},
 		async getGoodsDetail(goods_id) {
 			const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id });
 			if (res.meta.status !== 200) return uni.$showMsg();
@@ -100,5 +138,15 @@ export default {
 		color: gray;
 		margin: 10px 0;
 	}
+}
+
+.goods_nav {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+.goods_detail_container {
+	padding-bottom: 50px;
 }
 </style>
