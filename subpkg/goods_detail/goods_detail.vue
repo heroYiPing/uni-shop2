@@ -34,7 +34,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
+	computed: {
+		...mapState('m_cart', ['cart'])
+	},
 	data() {
 		return {
 			goods_info: {},

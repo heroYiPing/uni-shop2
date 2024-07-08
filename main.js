@@ -2,6 +2,8 @@ import App from './App'
 import {
 	$http
 } from '@escook/request-miniprogram'
+import store from '@/store/store.js'
+
 uni.$http = $http
 
 $http.baseUrl = 'https://api-hmugo-web.itheima.net'
@@ -34,7 +36,8 @@ import './uni.promisify.adaptor'
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-	...App
+	...App,
+	store
 })
 app.$mount()
 // #endif
