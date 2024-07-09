@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
 	computed: {
 		...mapState('m_cart', ['cart'])
@@ -69,6 +69,7 @@ export default {
 		};
 	},
 	methods: {
+		...mapMutations('m-cart', ['addToCart']),
 		onClick(e) {
 			console.log(e, 'e');
 			if (e.content.text == '购物车') {
@@ -76,6 +77,22 @@ export default {
 				uni.switchTab({
 					url: '/pages/cart/cart'
 				});
+			}
+		},
+		buttonClick(e) {
+			if (e.content.text == '加入购物车') {
+				// 每个商品的信息对象，都包含如下 6 个属性：
+				// { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
+				let { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state } = this.goods_info;
+				let goods = {
+					goods_id,
+					goods_name,
+					goods_price,
+					goods_count: 1,
+					goods_small_logo,
+					goods_state: true
+				};
+				this.addToCart(goods);
 			}
 		},
 		async getGoodsDetail(goods_id) {
