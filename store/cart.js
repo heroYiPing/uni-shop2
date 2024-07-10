@@ -12,13 +12,18 @@ export default {
 			let findResult = state.cart.find(item => item.goods_id == goods.goods_id)
 			console.log(findResult);
 			if (!findResult) {
-				state.cart.push(findResult)
+				state.cart.push(goods)
 			} else {
-				findResult++
+				findResult.goods_count++
 			}
-			console.log(state.cart);
 		}
 	},
 
-	getters: {}
+	getters: {
+		total(state) {
+			let c = 0
+			state.cart.forEach(item => c += x.goods_count)
+			return c
+		}
+	}
 }

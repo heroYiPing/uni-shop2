@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
 	computed: {
 		...mapState('m_cart', ['cart'])
@@ -68,8 +68,11 @@ export default {
 			]
 		};
 	},
+	computed: {
+		...mapGetters('m_cart')
+	},
 	methods: {
-		...mapMutations('m-cart', ['addToCart']),
+		...mapMutations('m_cart', ['addToCart']),
 		onClick(e) {
 			console.log(e, 'e');
 			if (e.content.text == '购物车') {
