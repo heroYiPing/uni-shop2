@@ -37,7 +37,25 @@
 import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
 	computed: {
-		...mapState('m_cart', ['cart'])
+		...mapState('m_cart', ['cart']),
+		...mapGetters('m_cart', ['total'])
+	},
+	watch: {
+		/* total(newVal) {
+			let findResult = this.options.find((item) => item.text == '购物车');
+			if (findResult) {
+				findResult.info = newVal;
+			}
+		} */
+		total: {
+			handler(newVal) {
+				let findResult = this.options.find((item) => item.text == '购物车');
+				if (findResult) {
+					findResult.info = newVal;
+				}
+			},
+			immediate: true
+		}
 	},
 	data() {
 		return {
@@ -51,7 +69,7 @@ export default {
 				{
 					icon: 'cart',
 					text: '购物车',
-					info: 9
+					info: ''
 				}
 			],
 			buttonGroup: [
@@ -68,9 +86,7 @@ export default {
 			]
 		};
 	},
-	computed: {
-		...mapGetters('m_cart')
-	},
+
 	methods: {
 		...mapMutations('m_cart', ['addToCart']),
 		onClick(e) {
