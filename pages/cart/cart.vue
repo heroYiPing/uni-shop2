@@ -9,18 +9,24 @@
 		</view>
 		<!-- 商品列表区域 -->
 		<block v-for="(goods, i) in cart" :key="i">
-			<my-goods :goods="goods"></my-goods>
+			<my-goods :goods="goods" :showRadio="true" @radio-change="radioChangeHandler"></my-goods>
 		</block>
 	</view>
 </template>
 
 <script>
 import badgeMix from '@/mixins/tabbar-badge.js';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
 	mixins: [badgeMix],
 	data() {
 		return {};
+	},
+	methods: {
+		radioChangeHandler(e) {
+			this.updateGoodsState(e);
+		},
+		...mapMutations('m_cart', ['updateGoodsState'])
 	},
 	computed: {
 		...mapState('m_cart', ['cart'])

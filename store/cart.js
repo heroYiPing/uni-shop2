@@ -20,13 +20,27 @@ export default {
 		},
 		saveToStorage(state) {
 			uni.setStorageSync('cart', JSON.stringify(state.cart))
+		},
+		// 更新购物车可选框
+		updateGoodsState(state, goods) {
+			let findResult = state.cart.find(item => {
+				return item.goods_id === goods.goods_id
+			})
+			findResult.goods_state = goods.goods_state
+
+			this.commit('m_cart/saveToStorage')
 		}
 	},
 
 	getters: {
 		total(state) {
+			console.log(state.cart, 'cart');
 			let c = 0
-			state.cart.forEach(x => c += x.goods_count)
+			state.cart.forEach(x => {
+				if (x.goods_state) {
+					c += x.goods_count
+				}
+			})
 			return c
 		}
 	}
