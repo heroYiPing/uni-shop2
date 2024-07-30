@@ -4,13 +4,17 @@
 			<radio :checked="goods.goods_state" color="#C00000" @click="radioClickHandler" v-if="showRadio"></radio>
 			<img :src="goods.goods_small_logo || defaultImage" alt="" class="goods_pic" />
 		</view>
-		<view class="goods_item_right">
+		<view class="goods-item-right">
 			<!-- 商品名称 -->
 			<view class="goods_name">
 				{{ goods.goods_name }}
 			</view>
-			<!-- 商品价格 -->
-			<view class="goods_price">￥{{ goods.goods_price | tofixed }}</view>
+			<view class="goods-info-box">
+				<!-- 商品价格 -->
+				<view class="goods-price">￥{{ goods.goods_price | tofixed }}</view>
+				<!-- 商品数量 -->
+				<uni-number-box :min="1" :value="goods.goods_count" v-if="showNum"></uni-number-box>
+			</view>
 		</view>
 	</view>
 </template>
@@ -22,6 +26,11 @@ export default {
 		goods: {
 			type: Object,
 			default: {}
+		},
+		showNum: {
+			type: Boolean,
+			// 默认情况下不展示数值框
+			default: false
 		},
 		showRadio: {
 			type: Boolean,
@@ -69,16 +78,25 @@ export default {
 			display: block;
 		}
 	}
-	.goods_item_right {
+	.goods-item-right {
 		display: flex;
+		flex: 1;
 		flex-direction: column;
 		justify-content: space-between;
-		.goods_name {
+
+		.goods-name {
 			font-size: 13px;
 		}
-		.goods_price {
+
+		.goods-info-box {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.goods-price {
 			font-size: 16px;
-			color: #c00;
+			color: #c00000;
 		}
 	}
 }
