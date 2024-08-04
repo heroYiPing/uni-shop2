@@ -13,7 +13,7 @@
 				<!-- 商品价格 -->
 				<view class="goods-price">￥{{ goods.goods_price | tofixed }}</view>
 				<!-- 商品数量 -->
-				<uni-number-box :min="1" :value="goods.goods_count" v-if="showNum"></uni-number-box>
+				<uni-number-box :min="1" :value="goods.goods_count" v-if="showNum" @change="numChangeHandler"></uni-number-box>
 			</view>
 		</view>
 	</view>
@@ -49,6 +49,16 @@ export default {
 			this.$emit('radio-change', {
 				goods_id: this.goods.goods_id,
 				goods_state: !this.goods.goods_state
+			});
+		},
+		// // NumberBox 组件的 change 事件处理函数
+		numChangeHandler(val) {
+			// 通过 this.$emit() 触发外界通过 @ 绑定的 num-change 事件
+			this.$emit('num-change', {
+				// 商品的 Id
+				goods_id: this.goods.goods_id,
+				// 商品的最新数量
+				goods_count: +val
 			});
 		}
 	},
