@@ -8,9 +8,15 @@
 			<text class="cart-title-text">购物车</text>
 		</view>
 		<!-- 商品列表区域 -->
-		<block v-for="(goods, i) in cart" :key="i">
-			<my-goods :goods="goods" :showRadio="true" :showNum="true" @radio-change="radioChangeHandler" @num-change="numberChangeHandler"></my-goods>
-		</block>
+		<!-- uni-swipe-action 是最外层包裹性质的容器 -->
+		<uni-swipe-action>
+			<block v-for="(goods, i) in cart" :key="i">
+				<!-- uni-swipe-action-item 可以为其子节点提供滑动操作的效果。需要通过 options 属性来指定操作按钮的配置信息 -->
+				<uni-swipe-action-item :right-options="options" @click="swipeActionClickHandler(goods)">
+					<my-goods :goods="goods" :show-radio="true" :show-num="true" @radio-change="radioChangeHandler" @num-change="numberChangeHandler"></my-goods>
+				</uni-swipe-action-item>
+			</block>
+		</uni-swipe-action>
 	</view>
 </template>
 
@@ -20,7 +26,16 @@ import { mapState, mapMutations } from 'vuex';
 export default {
 	mixins: [badgeMix],
 	data() {
-		return {};
+		return {
+			options: [
+				{
+					text: '删除', // 显示的文本内容
+					style: {
+						backgroundColor: '#C00000' // 按钮的背景颜色
+					}
+				}
+			]
+		};
 	},
 	methods: {
 		radioChangeHandler(e) {
@@ -29,7 +44,11 @@ export default {
 		numberChangeHandler(e) {
 			this.updateGoodsCount(e);
 		},
-		...mapMutations('m_cart', ['updateGoodsState', 'updateGoodsCount'])
+		// 点击了滑动操作按钮
+		swipeActionClickHandler(goods) {
+			this.removeGoodsById(goods.goods_id);
+		},
+		...mapMutations('m_cart', ['updateGoodsState', 'updateGoodsCount', 'removeGoodsById'])
 	},
 	computed: {
 		...mapState('m_cart', ['cart'])

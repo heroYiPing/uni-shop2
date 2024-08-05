@@ -41,12 +41,18 @@ export default {
 				// 持久化存储到本地
 				this.commit('m_cart/saveToStorage')
 			}
+		},
+		// 根据 Id 从购物车中删除对应的商品信息
+		removeGoodsById(state, goods_id) {
+			// 调用数组的 filter 方法进行过滤
+			state.cart = state.cart.filter(x => x.goods_id !== goods_id)
+			// 持久化存储到本地
+			this.commit('m_cart/saveToStorage')
 		}
 	},
 
 	getters: {
 		total(state) {
-			console.log(state.cart, 'cart');
 			let c = 0
 			state.cart.forEach(x => {
 				if (x.goods_state) {
