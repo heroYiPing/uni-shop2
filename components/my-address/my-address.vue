@@ -2,7 +2,7 @@
 	<view>
 		<!-- 收货地址组件 -->
 		<view class="address-choose-box" v-if="JSON.stringify(address) === '{}'">
-			<button type="primary" size="mini">请选择收货地址+</button>
+			<button type="primary" size="mini" class="btnChooseAddress" @click="chooseAddress1">请选择收货地址+</button>
 		</view>
 
 		<!-- 渲染收货信息的盒子 -->
@@ -38,10 +38,21 @@ export default {
 	name: 'my-address',
 	data() {
 		return {
-			address: {
-				username: 'zs'
-			}
+			address: {}
 		};
+	},
+	methods: {
+		// 选择收货地址
+		async chooseAddress1() {
+			// 1. 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
+			//    返回值是一个数组：第 1 项为错误对象；第 2 项为成功之后的收货地址对象
+			const res = await uni.chooseAddress().catch((err) => err);
+			// 2. 用户成功的选择了收货地址
+			if (res && res.errMsg === 'chooseAddress:ok') {
+				// 为 data 里面的收货地址对象赋值
+				this.address = res;
+			}
+		}
 	}
 };
 </script>
