@@ -52,14 +52,22 @@ export default {
 	},
 
 	getters: {
+		// 购物车商品总数量
 		total(state) {
-			let c = 0
+			/* let c = 0
 			state.cart.forEach(x => {
-				if (x.goods_state) {
-					c += x.goods_count
-				}
+				c += x.goods_count
 			})
-			return c
+			return c */
+
+			return state.cart.reduce((total, item) => total += item.goods_count, 0)
+		},
+		// 勾选的商品的总数量
+		checkedCount(state) {
+			// 先使用 filter 方法，从购物车中过滤器已勾选的商品
+			// 再使用 reduce 方法，将已勾选的商品总数量进行累加
+			// reduce() 的返回值就是已勾选的商品的总数量
+			return state.cart.filter(x => x.goods_state).reduce((total, item) => total += item.goods_count, 0)
 		}
 	}
 }
