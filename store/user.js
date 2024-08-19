@@ -6,6 +6,7 @@ export default {
 	state: () => ({
 		// 3. 读取本地的收货地址数据，初始化 address 对象
 		address: JSON.parse(uni.getStorageSync('address') || '{}'),
+		token: ''
 	}),
 
 	// 方法
