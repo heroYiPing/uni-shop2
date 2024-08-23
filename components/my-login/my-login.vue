@@ -26,15 +26,35 @@ export default {
 			uni.getUserProfile({
 				desc: 'code',
 				success: (res) => {
-					uni.$showMsg('授权成功！');
+					/* uni.$showMsg('授权成功！'); */
 					this.updateUserInfo(res.userInfo);
 					console.log(res);
+					this.getToken(res);
 				},
 				fail: (res) => {
 					uni.$showMsg('您取消了授权！');
 					console.log(res);
 				}
 			});
+		},
+		async getToken(info) {
+			let { code, errMsg } = await uni.login().catch((err) => err);
+			console.log(code, errMsg, 'login res');
+			if (!code || errMsg !== 'login:ok') return uni.$showMsg('登录失败！');
+
+			// 准备参数对象
+			const query = {
+				code,
+				encryptedData: info.encryptedData,
+				iv: info.iv,
+				rawData: info.rawData,
+				signature: info.signature
+			};
+
+			// 换取 token
+			const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query);
+			if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！');
+			uni.$showMsg('登录成功');
 		}
 	}
 };
