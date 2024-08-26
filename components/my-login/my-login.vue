@@ -20,7 +20,8 @@ export default {
 	},
 	methods: {
 		// 2. 调用 mapMutations 辅助方法，把 m_user 模块中的 updateUserInfo 映射到当前组件中使用
-		...mapMutations('m_user', ['updateUserInfo']),
+		// 1. 使用 mapMutations 辅助方法，把 m_user 模块中的 updateToken 方法映射到当前组件中使用
+		...mapMutations('m_user', ['updateUserInfo', 'updateToken']),
 		// 获取微信用户的基本信息
 		getUserProfile() {
 			uni.getUserProfile({
@@ -53,8 +54,13 @@ export default {
 
 			// 换取 token
 			const { data: loginResult } = await uni.$http.post('/api/public/v1/users/wxlogin', query);
-			if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！');
-			uni.$showMsg('登录成功');
+			/* if (loginResult.meta.status !== 200) return uni.$showMsg('登录失败！'); */
+			/* uni.$showMsg('登录成功'); */
+
+			// 2. 更新 vuex 中的 token
+			this.updateToken(
+				'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'
+			);
 		}
 	}
 };

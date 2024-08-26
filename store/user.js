@@ -6,7 +6,8 @@ export default {
 	state: () => ({
 		// 3. 读取本地的收货地址数据，初始化 address 对象
 		address: JSON.parse(uni.getStorageSync('address') || '{}'),
-		token: '',
+		// 登录成功之后的 token 字符串
+		token: uni.getStorageSync('token') || '',
 		// 用户的基本信息
 		userinfo: JSON.parse(uni.getStorageSync('userinfo') || '{}')
 	}),
@@ -35,6 +36,18 @@ export default {
 		// 将 userinfo 持久化存储到本地
 		saveUserInfoToStorage(state) {
 			uni.setStorageSync('userinfo', JSON.stringify(state.userinfo))
+		},
+
+		// 更新 token 字符串
+		updateToken(state, token) {
+			state.token = token
+			// 通过 this.commit() 方法，调用 m_user 模块下的 saveTokenToStorage 方法，将 token 字符串持久化存储到本地
+			this.commit('m_user/saveTokenToStorage')
+		},
+
+		// 将 token 字符串持久化存储到本地
+		saveTokenToStorage(state) {
+			uni.setStorageSync('token', state.token)
 		}
 	},
 
