@@ -34,7 +34,11 @@ export default {
 		}
 	},
 	data() {
-		return {};
+		return {
+			// 倒计时的秒数
+			seconds: 3,
+			timer: null
+		};
 	},
 	// 省略其它代码
 	methods: {
@@ -55,7 +59,48 @@ export default {
 			if (!this.addstr) return uni.$showMsg('请选择收货地址！');
 
 			// 3. 最后判断用户是否登录了
-			if (!this.token) return uni.$showMsg('请先登录！');
+			// if (!this.token) return uni.$showMsg('请先登录！');
+			if (!this.token) return this.delayNavigate();
+		},
+		// 延迟导航到 my 页面
+		delayNavigate() {
+			this.seconds = 3;
+			this.showTips(this.seconds);
+
+			// 1. 将定时器的 Id 存储到 timer 中
+			this.timer = setInterval(() => {
+				this.seconds--;
+
+				// 2. 判断秒数是否 <= 0
+				if (this.seconds <= 0) {
+					// 2.1 清除定时器
+					clearInterval(this.timer);
+
+					// 2.2 跳转到 my 页面
+					uni.switchTab({
+						url: '/pages/my/my'
+					});
+
+					// 2.3 终止后续代码的运行（当秒数为 0 时，不再展示 toast 提示消息）
+					return;
+				}
+
+				this.showTips(this.seconds);
+			}, 1000);
+		},
+		// 展示倒计时的提示消息
+		showTips(n) {
+			// 调用 uni.showToast() 方法，展示提示消息
+			uni.showToast({
+				// 不展示任何图标
+				icon: 'none',
+				// 提示的消息
+				title: '请登录后再结算！' + n + ' 秒后自动跳转到登录页',
+				// 为页面添加透明遮罩，防止点击穿透
+				mask: true,
+				// 1.5 秒后自动消失
+				duration: 1500
+			});
 		}
 	}
 };
