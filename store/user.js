@@ -9,11 +9,18 @@ export default {
 		// 登录成功之后的 token 字符串
 		token: uni.getStorageSync('token') || '',
 		// 用户的基本信息
-		userinfo: JSON.parse(uni.getStorageSync('userinfo') || '{}')
+		userinfo: JSON.parse(uni.getStorageSync('userinfo') || '{}'),
+		// 重定向的 object 对象 { openType, from }
+		redirectInfo: null
 	}),
 
 	// 方法
 	mutations: {
+		// 更新重定向的信息对象
+		updateRedirectInfo(state, info) {
+			state.redirectInfo = info
+			console.log();
+		},
 		// 更新收货地址
 		updateAddress(state, address) {
 			state.address = address
